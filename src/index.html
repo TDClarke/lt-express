@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Spelling & Grammar Check</title>
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #fff; --fg: #222; --muted: #6b6b6b; --card: #f6f6f6; --border: #d9d9d9;
+      --accent: #5258e4; --spell: #d7373f; --gram: #2680eb; --style: #cb6f10;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root { --bg: #1e1e1e; --fg: #eee; --muted: #a0a0a0; --card: #2a2a2a; --border: #444; --accent: #8b8ff5; }
+    }
+    * { box-sizing: border-box; }
+    body { margin: 0; padding: 12px; font: 13px/1.45 system-ui, sans-serif; background: var(--bg); color: var(--fg); }
+    label { display: block; font-weight: 600; margin: 10px 0 4px; }
+    select, button { font: inherit; }
+    select { width: 100%; padding: 6px; border-radius: 6px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); }
+    .row { display: flex; gap: 12px; margin-top: 6px; }
+    .row label { font-weight: 400; margin: 0; display: flex; gap: 4px; align-items: center; }
+    button.primary { width: 100%; margin-top: 12px; padding: 9px; border: 0; border-radius: 18px; background: var(--accent); color: #fff; font-weight: 600; cursor: pointer; }
+    button.primary:disabled { opacity: .5; cursor: default; }
+    #status { margin: 12px 0 6px; color: var(--muted); min-height: 1.4em; }
+    #status.error { color: var(--spell); }
+    .issue { background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--gram); border-radius: 6px; padding: 8px 10px; margin-bottom: 8px; }
+    .issue.misspelling { border-left-color: var(--spell); }
+    .issue.style { border-left-color: var(--style); }
+    .issue .ctx { margin: 4px 0; word-break: break-word; }
+    .issue mark { background: transparent; text-decoration: underline wavy var(--spell); font-weight: 600; color: inherit; }
+    .issue .msg { color: var(--muted); font-size: 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+    .actions button { padding: 3px 10px; border-radius: 12px; border: 1px solid var(--border); background: var(--bg); color: var(--fg); cursor: pointer; }
+    .actions button.fix { border-color: var(--accent); color: var(--accent); font-weight: 600; }
+    footer { margin-top: 14px; font-size: 11px; color: var(--muted); }
+  </style>
+</head>
+<body>
+  <label for="lang">Language</label>
+  <select id="lang"><option value="auto">Auto-detect</option></select>
+
+  <div class="row">
+    <label><input type="radio" name="scope" value="all" checked /> Whole document</label>
+    <label><input type="radio" name="scope" value="selection" /> Selection</label>
+  </div>
+
+  <button id="check" class="primary" disabled>Check document</button>
+  <div id="status" role="status"></div>
+  <div id="results"></div>
+
+  <footer>
+    Text is sent to the public <a href="https://languagetool.org" target="_blank">LanguageTool</a>
+    API (free tier: 20 requests/min, 20&nbsp;KB per request). Avoid checking confidential content.
+  </footer>
+</body>
+</html>
